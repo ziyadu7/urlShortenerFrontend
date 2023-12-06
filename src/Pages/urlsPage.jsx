@@ -1,14 +1,25 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import axiosInstance from '../api/axios'
 
 function UrlsPage() {
+
+  const [urls,setUrls] = useState([])
+
+  useEffect(()=>{
+    axiosInstance.get('/getUrls').then(res=>{
+      console.log(res);
+      setUrls(res?.data?.urls)
+    }).catch(err=>{
+      console.log(err);
+    })
+  },[])
+  
   return (
     <div className='p-10'>
       <div className='flex gap-2 mx-auto max-w-sm'>
         <input type="text" value="" placeholder='Enter url here' className='block border border-gray-800 w-full px-4 py-2 rounded mb-4' />
         <button className='bg-neutral-900 rounded-md text-center text-white px-3 hover:bg-slate-700 h-11'>Shorten</button>
       </div>
-
-
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

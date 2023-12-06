@@ -5,19 +5,19 @@ function UrlsPage() {
 
   const [urls,setUrls] = useState([])
 
-  useEffect(()=>{
-    axiosInstance.get('/getUrls').then(res=>{
-      console.log(res);
-      setUrls(res?.data?.urls)
-    }).catch(err=>{
-      console.log(err);
-    })
-  },[])
-  
+  // useEffect(()=>{
+  //   axiosInstance.get('/getUrls').then(res=>{
+  //     console.log(res);
+  //     setUrls(res?.data?.urls)
+  //   }).catch(err=>{
+  //     console.log(err);
+  //   })
+  // },[])
+
   return (
     <div className='p-10'>
       <div className='flex gap-2 mx-auto max-w-sm'>
-        <input type="text" value="" placeholder='Enter url here' className='block border border-gray-800 w-full px-4 py-2 rounded mb-4' />
+        <input type="text" placeholder='Enter url here' className='block border border-gray-800 w-full px-4 py-2 rounded mb-4' />
         <button className='bg-neutral-900 rounded-md text-center text-white px-3 hover:bg-slate-700 h-11'>Shorten</button>
       </div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">

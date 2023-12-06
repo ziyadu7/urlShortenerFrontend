@@ -1,4 +1,3 @@
-import './App.css'
 import {BrowserRouter as Router,Route,Routes} from 'react-router-dom'
 import UrlsPage from './Pages/urlsPage'
 import Login from './Pages/login'

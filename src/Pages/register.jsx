@@ -1,8 +1,10 @@
 import React from 'react'
+import UserForm from '../Components/userForm'
 
 function Register() {
+
   return (
-    <div>Register</div>
+    <UserForm isLogin={false}/>
   )
 }
 

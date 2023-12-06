@@ -25,7 +25,7 @@ function UserForm({isLogin,setPassword,setUsername,handleSubmit,err}) {
               name="password"
               placeholder="Password" />
            </div>
-            <div className='felx justify-center'>
+            <div className='felx justify-center h-5'>
               <p className='text-red-600 text-center'>{err}</p>
             </div>
             <p className='text-center text-blue-600 cursor-pointer' onClick={() =>{isLogin? navigate('/register'): navigate('/login')}}>{isLogin ? "Don't have an account ?": "Already have Acoount ?"}</p>

@@ -19,7 +19,6 @@ function UrlsPage() {
       },
     })
       .then(res => {
-        console.log(res);
         setUrls(res?.data?.urls);
       })
       .catch(err => {
@@ -40,7 +39,6 @@ function UrlsPage() {
           authorization: `Bearer ${encodeURIComponent(token)}`
         }
       }).then(res => {
-        console.log(res);
         toast.success(res?.data?.message)
         setReload(!reload)
       }).catch(err => {
@@ -53,7 +51,6 @@ function UrlsPage() {
   }
 
   const deleteUrl = (urlId)=>{
-    console.log(urlId);
     axiosInstance.delete(`/deleteUrl/${urlId}`,{
       headers: {
       authorization: `Bearer ${encodeURIComponent(token)}`
@@ -94,8 +91,8 @@ function UrlsPage() {
               </th>
             </tr>
           </thead>
+          <tbody>
           {urls.length>0?urls?.map(url => (
-         <tbody>
             
               <tr key={url?._id} className="bg-whit hover:bg-gray-50 text-blue-600">
                 <td scope="row" className="px-6 py-4 hover:cursor-pointer font-medium whitespace-nowrap">
@@ -108,12 +105,12 @@ function UrlsPage() {
                   <button onClick={()=>deleteUrl(url?._id)} className="font-medium text-red-600 hover:cursor-pointer hover:underline">delete</button>
                 </td>
               </tr>
-          </tbody>
             )):
             <div className='flex text-red-600 font-semibold text-2xl justify-center '>
               Add any urls
             </div>
             }
+            </tbody>
         </table>
       </div>
     </div>

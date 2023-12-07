@@ -16,7 +16,6 @@ function Register() {
       setErr('Fill all the fields')
     }else{
       axiosInstance.post('/register',{username,password}).then(res=>{
-        console.log(res);
         toast.success('Registration successfull, Please login')
         navigate('/login')
       }).catch(err=>{

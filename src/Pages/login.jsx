@@ -16,7 +16,8 @@ function Login() {
       setErr('Fill all the fields')
     }else{
       axiosInstance.post('/login',{username,password}).then(res=>{
-        console.log(res)
+        console.log(res.data.token)
+        localStorage.setItem('token',res?.data?.token)
         navigate('/')
       }).catch(err=>{
         if(err?.response?.data?.message){

@@ -6,16 +6,15 @@ import { useNavigate } from 'react-router-dom';
 function UrlsPage() {
 
   const [urls,setUrls] = useState([])
-  const [url,setUrl] = useState('')
-  const navigate = useNavigate()
-
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N…zMDV9.Z94frb3jmul0PEp4w2mWB4j_De77wZ1FgQFh5_mSP14';
+  const [url,setUrl] = useState('')    
+   
+  const token = localStorage.getItem('token')
 
   useEffect(() => {
   
     axiosInstance.get('/', {
       headers: { authorization: `Bearer ${encodeURIComponent(token)}`
-     }, // Pass the token directly without encoding
+     },
     })
       .then(res => {
         console.log(res);

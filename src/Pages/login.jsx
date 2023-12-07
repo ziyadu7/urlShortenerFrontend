@@ -15,6 +15,7 @@ function Login() {
   const {login} = useAuth()
 
   const handleRegister = ()=>{
+    setErr('')
     setLoading(true)
     if(username.trim().length<=0||password.trim().length<=0){
       setLoading(false)

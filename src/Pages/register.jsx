@@ -13,6 +13,7 @@ function Register() {
   const [loading,setLoading] = useState(false)
 
   const handleRegister = ()=>{
+    setErr('')
     setLoading(true)
     if(username.trim().length<=0||password.trim().length<=0){
       setLoading(false)

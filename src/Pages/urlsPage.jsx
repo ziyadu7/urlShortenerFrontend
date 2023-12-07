@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axiosInstance from '../api/axios'
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/authContext';
 
 function UrlsPage() {
 
@@ -9,6 +10,7 @@ function UrlsPage() {
   const [url, setUrl] = useState('')
   const navigate = useNavigate()
   const token = localStorage.getItem('userToken')
+  const {logout} = useAuth()
 
   useEffect(() => {
 
@@ -57,8 +59,7 @@ function UrlsPage() {
         <button onClick={addUrl} className='bg-neutral-900 rounded-md text-center text-white px-3 hover:bg-slate-700 h-11'>Shorten</button>
         <div className='flex justify-end'>
           <button onClick={() => {
-          localStorage.setItem('userToken', 'undefined')
-          navigate('/login')
+          logout()
           }} className='bg-red-500 rounded-md text-center text-white px-3 hover:bg-red-700 h-11'>Logout</button>
         </div>
       </div>

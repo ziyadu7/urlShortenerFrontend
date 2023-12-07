@@ -24,6 +24,8 @@ function UrlsPage() {
       .catch(err => {
         if (err?.response?.data?.message) {
           toast.error(err?.response?.data?.message)
+        }else if(err?.message){
+          toast.error(err?.message)
         }
         console.log(err);
       });
@@ -45,6 +47,8 @@ function UrlsPage() {
         console.log(err);
         if (err?.response?.data?.message) {
           toast.error(err?.response?.data?.message)
+        }else if(err?.message){
+          toast.error(err?.message)
         }
       })
     }
@@ -61,6 +65,8 @@ function UrlsPage() {
       console.log(err)
       if(err?.response?.data?.message){
         toast.error(err?.response?.data?.message)
+      }else if(err?.message){
+        toast.error(err?.message)
       }
     })
   }

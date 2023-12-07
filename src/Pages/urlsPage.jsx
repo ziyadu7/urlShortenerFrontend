@@ -92,7 +92,7 @@ function UrlsPage() {
             </tr>
           </thead>
           <tbody>
-          {urls.length>0?urls?.map(url => (
+          {urls?.length>0?urls?.map(url => (
             
               <tr key={url?._id} className="bg-whit hover:bg-gray-50 text-blue-600">
                 <td scope="row" className="px-6 py-4 hover:cursor-pointer font-medium whitespace-nowrap">

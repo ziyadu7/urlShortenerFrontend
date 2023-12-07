@@ -1,30 +1,64 @@
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../api/axios'
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 function UrlsPage() {
 
   const [urls,setUrls] = useState([])
+  const [url,setUrl] = useState('')
+  const navigate = useNavigate()
 
-  // useEffect(()=>{
-  //   axiosInstance.get('/getUrls').then(res=>{
-  //     console.log(res);
-  //     setUrls(res?.data?.urls)
-  //   }).catch(err=>{
-  //     console.log(err);
-  //   })
-  // },[])
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N…zMDV9.Z94frb3jmul0PEp4w2mWB4j_De77wZ1FgQFh5_mSP14';
+
+  useEffect(() => {
+  
+    axiosInstance.get('/', {
+      headers: { authorization: `Bearer ${encodeURIComponent(token)}`
+     }, // Pass the token directly without encoding
+    })
+      .then(res => {
+        console.log(res);
+        setUrls(res?.data?.urls);
+      })
+      .catch(err => {
+        if(err?.response?.data?.message){
+          toast.error(err?.response?.data?.message)
+        }
+        console.log(err);
+      });
+  }, []);
+
+
+  const addUrl = ()=>{
+    if(url.trim().length<=0){
+      toast.error('Fill all the fields')
+    }else{
+      axiosInstance.post('/addUrl',{url},{headers:{
+        authorization:`Bearer ${encodeURIComponent(token)}`
+      }}).then(res=>{
+        console.log(res);
+        toast.success(res?.data?.message)
+      }).catch(err=>{
+        console.log(err);
+        if(err?.response?.data?.message){
+          toast.error(err?.response?.data?.message)
+        }
+      })
+    }
+  }
 
   return (
     <div className='p-10'>
       <div className='flex gap-2 mx-auto max-w-sm'>
-        <input type="text" placeholder='Enter url here' className='block border border-gray-800 w-full px-4 py-2 rounded mb-4' />
-        <button className='bg-neutral-900 rounded-md text-center text-white px-3 hover:bg-slate-700 h-11'>Shorten</button>
+        <input type="text" placeholder='Enter url here' onChange={(e)=>setUrl(e.target.value)} className='block border border-gray-800 w-full px-4 py-2 rounded mb-4' />
+        <button onClick={addUrl} className='bg-neutral-900 rounded-md text-center text-white px-3 hover:bg-slate-700 h-11'>Shorten</button>
       </div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 hover:cursor-pointer">
                 Original Url
               </th>
               <th scope="col" className="px-6 py-3">
@@ -36,17 +70,19 @@ function UrlsPage() {
             </tr>
           </thead>
           <tbody>
-            <tr className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-              <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                Magic Mouse 2
-              </th>
-              <td className="px-6 py-4">
-                Black
+            {urls?.map(url=>(
+            <tr key={url?._id} className="bg-whit hover:bg-gray-50 text-blue-600">
+              <td scope="row" className="px-6 py-4 hover:cursor-pointer font-medium whitespace-nowrap">
+                <a target='_blank' href={url.url}>{url.url}</a>
+              </td>
+              <td className="px-6 py-4 hover:cursor-pointer">
+              <a target='_blank' href={url.url}>{url.shortenUrl}</a>
               </td>
               <td className="px-6 py-4">
-                <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</button>
+                <button className="font-medium text-blue-600 hover:cursor-pointer hover:underline">Edit</button>
               </td>
             </tr>
+            ))}
           </tbody>
         </table>
 

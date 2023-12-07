@@ -53,7 +53,8 @@ function UrlsPage() {
   }
 
   const deleteUrl = (urlId)=>{
-    axiosInstance.delete(`/deleteUrl${{urlId}}`,{
+    console.log(urlId);
+    axiosInstance.delete(`/deleteUrl/${urlId}`,{
       headers: {
       authorization: `Bearer ${encodeURIComponent(token)}`
     }}).then(res=>{

@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../api/axios'
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/authContext';
 
 function UrlsPage() {
 
   const [urls, setUrls] = useState([])
   const [url, setUrl] = useState('')
-  const navigate = useNavigate()
   const token = localStorage.getItem('userToken')
   const {logout} = useAuth()
+  const [reload,setReload] = useState(false)
 
   useEffect(() => {
 
@@ -29,7 +28,7 @@ function UrlsPage() {
         }
         console.log(err);
       });
-  }, []);
+  }, [reload]);
 
 
   const addUrl = () => {
@@ -43,6 +42,7 @@ function UrlsPage() {
       }).then(res => {
         console.log(res);
         toast.success(res?.data?.message)
+        setReload(!reload)
       }).catch(err => {
         console.log(err);
         if (err?.response?.data?.message) {
@@ -50,6 +50,21 @@ function UrlsPage() {
         }
       })
     }
+  }
+
+  const deleteUrl = (urlId)=>{
+    axiosInstance.delete('/deleteUrl',{urlId},{
+      headers: {
+      authorization: `Bearer ${encodeURIComponent(token)}`
+    }}).then(res=>{
+      toast.success(res.data.message)
+      setReload(!reload)
+    }).catch(err=>{
+      console.log(err)
+      if(err?.response?.data?.message){
+        toast.error(err?.response?.data?.message)
+      }
+    })
   }
 
   return (
@@ -78,8 +93,9 @@ function UrlsPage() {
               </th>
             </tr>
           </thead>
-          <tbody>
-            {urls?.map(url => (
+          {urls.length>0?urls?.map(url => (
+         <tbody>
+            
               <tr key={url?._id} className="bg-whit hover:bg-gray-50 text-blue-600">
                 <td scope="row" className="px-6 py-4 hover:cursor-pointer font-medium whitespace-nowrap">
                   <a target='_blank' href={url.url}>{url.url}</a>
@@ -88,11 +104,15 @@ function UrlsPage() {
                   <a target='_blank' href={url.url}>{url.shortenUrl}</a>
                 </td>
                 <td className="px-6 py-4">
-                  <button className="font-medium text-blue-600 hover:cursor-pointer hover:underline">Edit</button>
+                  <button onClick={()=>deleteUrl(url?._id)} className="font-medium text-red-600 hover:cursor-pointer hover:underline">delete</button>
                 </td>
               </tr>
-            ))}
           </tbody>
+            )):
+            <div className='flex text-red-600 font-semibold text-2xl justify-center '>
+              Add any urls
+            </div>
+            }
         </table>
       </div>
     </div>

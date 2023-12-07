@@ -11,9 +11,9 @@ function App() {
   return (
     <Router>
     <Routes>
-      <Route path='/' element = {token!='undefined'?<UrlsPage/>:<Navigate to={'/login'}/>}/>
-      <Route path='/login' element = {token!='undefined'?<Navigate to={'/'}/>:<Login/>}/>
-      <Route path='/register' element = {token!='undefined'?<Navigate to={'/'}/>:<Register/>}/>
+      <Route path='/' element = {token!='null'?<UrlsPage/>:<Navigate to={'/login'}/>}/>
+      <Route path='/login' element = {token!='null'?<Navigate to={'/'}/>:<Login/>}/>
+      <Route path='/register' element = {token!='null'?<Navigate to={'/'}/>:<Register/>}/>
     </Routes>
   </Router>
   )

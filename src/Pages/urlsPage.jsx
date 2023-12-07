@@ -5,23 +5,24 @@ import { useNavigate } from 'react-router-dom';
 
 function UrlsPage() {
 
-  const [urls,setUrls] = useState([])
-  const [url,setUrl] = useState('')    
-   
-  const token = localStorage.getItem('token')
+  const [urls, setUrls] = useState([])
+  const [url, setUrl] = useState('')
+  const navigate = useNavigate()
+  const token = localStorage.getItem('userToken')
 
   useEffect(() => {
-  
+
     axiosInstance.get('/', {
-      headers: { authorization: `Bearer ${encodeURIComponent(token)}`
-     },
+      headers: {
+        authorization: `Bearer ${encodeURIComponent(token)}`
+      },
     })
       .then(res => {
         console.log(res);
         setUrls(res?.data?.urls);
       })
       .catch(err => {
-        if(err?.response?.data?.message){
+        if (err?.response?.data?.message) {
           toast.error(err?.response?.data?.message)
         }
         console.log(err);
@@ -29,18 +30,20 @@ function UrlsPage() {
   }, []);
 
 
-  const addUrl = ()=>{
-    if(url.trim().length<=0){
+  const addUrl = () => {
+    if (url.trim().length <= 0) {
       toast.error('Fill all the fields')
-    }else{
-      axiosInstance.post('/addUrl',{url},{headers:{
-        authorization:`Bearer ${encodeURIComponent(token)}`
-      }}).then(res=>{
+    } else {
+      axiosInstance.post('/addUrl', { url }, {
+        headers: {
+          authorization: `Bearer ${encodeURIComponent(token)}`
+        }
+      }).then(res => {
         console.log(res);
         toast.success(res?.data?.message)
-      }).catch(err=>{
+      }).catch(err => {
         console.log(err);
-        if(err?.response?.data?.message){
+        if (err?.response?.data?.message) {
           toast.error(err?.response?.data?.message)
         }
       })
@@ -49,9 +52,15 @@ function UrlsPage() {
 
   return (
     <div className='p-10'>
-      <div className='flex gap-2 mx-auto max-w-sm'>
-        <input type="text" placeholder='Enter url here' onChange={(e)=>setUrl(e.target.value)} className='block border border-gray-800 w-full px-4 py-2 rounded mb-4' />
+      <div className='flex gap-2 mx-auto max-w-lg'>
+        <input type="text" placeholder='Enter url here' onChange={(e) => setUrl(e.target.value)} className='block border border-gray-800 w-full px-4 py-2 rounded mb-4' />
         <button onClick={addUrl} className='bg-neutral-900 rounded-md text-center text-white px-3 hover:bg-slate-700 h-11'>Shorten</button>
+        <div className='flex justify-end'>
+          <button onClick={() => {
+          localStorage.setItem('userToken', 'undefined')
+          navigate('/login')
+          }} className='bg-red-500 rounded-md text-center text-white px-3 hover:bg-red-700 h-11'>Logout</button>
+        </div>
       </div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -69,22 +78,21 @@ function UrlsPage() {
             </tr>
           </thead>
           <tbody>
-            {urls?.map(url=>(
-            <tr key={url?._id} className="bg-whit hover:bg-gray-50 text-blue-600">
-              <td scope="row" className="px-6 py-4 hover:cursor-pointer font-medium whitespace-nowrap">
-                <a target='_blank' href={url.url}>{url.url}</a>
-              </td>
-              <td className="px-6 py-4 hover:cursor-pointer">
-              <a target='_blank' href={url.url}>{url.shortenUrl}</a>
-              </td>
-              <td className="px-6 py-4">
-                <button className="font-medium text-blue-600 hover:cursor-pointer hover:underline">Edit</button>
-              </td>
-            </tr>
+            {urls?.map(url => (
+              <tr key={url?._id} className="bg-whit hover:bg-gray-50 text-blue-600">
+                <td scope="row" className="px-6 py-4 hover:cursor-pointer font-medium whitespace-nowrap">
+                  <a target='_blank' href={url.url}>{url.url}</a>
+                </td>
+                <td className="px-6 py-4 hover:cursor-pointer">
+                  <a target='_blank' href={url.url}>{url.shortenUrl}</a>
+                </td>
+                <td className="px-6 py-4">
+                  <button className="font-medium text-blue-600 hover:cursor-pointer hover:underline">Edit</button>
+                </td>
+              </tr>
             ))}
           </tbody>
         </table>
-
       </div>
     </div>
   )

@@ -4,7 +4,7 @@ import Login from './Pages/login'
 import Register from './Pages/register'
 
 function App() {
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem('userToken')
   return (
     <Router>
     <Routes>

@@ -1,17 +1,16 @@
-import {BrowserRouter as Router,Route,Routes} from 'react-router-dom'
+import {BrowserRouter as Router,Route,Routes, Navigate} from 'react-router-dom'
 import UrlsPage from './Pages/urlsPage'
 import Login from './Pages/login'
 import Register from './Pages/register'
 
 function App() {
   const token = localStorage.getItem('token')
-  console.log(token);
   return (
     <Router>
     <Routes>
-      <Route path='/' element = {<UrlsPage/>}/>
-      <Route path='/login' element = {<Login/>}/>
-      <Route path='/register' element = {<Register/>}/>
+      <Route path='/' element = {token!='undefined'?<UrlsPage/>:<Navigate to={'/login'}/>}/>
+      <Route path='/login' element = {token!='undefined'?<Navigate to={'/'}/>:<Login/>}/>
+      <Route path='/register' element = {token!='undefined'?<Navigate to={'/'}/>:<Register/>}/>
     </Routes>
   </Router>
   )

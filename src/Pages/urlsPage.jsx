@@ -8,8 +8,8 @@ function UrlsPage() {
   const [urls, setUrls] = useState([])
   const [url, setUrl] = useState('')
   const token = localStorage.getItem('userToken')
-  const {logout} = useAuth()
-  const [reload,setReload] = useState(false)
+  const { logout } = useAuth()
+  const [reload, setReload] = useState(false)
 
   useEffect(() => {
 
@@ -24,7 +24,7 @@ function UrlsPage() {
       .catch(err => {
         if (err?.response?.data?.message) {
           toast.error(err?.response?.data?.message)
-        }else if(err?.message){
+        } else if (err?.message) {
           toast.error(err?.message)
         }
         console.log(err);
@@ -41,31 +41,34 @@ function UrlsPage() {
           authorization: `Bearer ${encodeURIComponent(token)}`
         }
       }).then(res => {
+        setUrl('')
         toast.success(res?.data?.message)
         setReload(!reload)
       }).catch(err => {
+        setUrl('')
         console.log(err);
         if (err?.response?.data?.message) {
           toast.error(err?.response?.data?.message)
-        }else if(err?.message){
+        } else if (err?.message) {
           toast.error(err?.message)
         }
       })
     }
   }
 
-  const deleteUrl = (urlId)=>{
-    axiosInstance.delete(`/deleteUrl/${urlId}`,{
+  const deleteUrl = (urlId) => {
+    axiosInstance.delete(`/deleteUrl/${urlId}`, {
       headers: {
-      authorization: `Bearer ${encodeURIComponent(token)}`
-    }}).then(res=>{
+        authorization: `Bearer ${encodeURIComponent(token)}`
+      }
+    }).then(res => {
       toast.success(res.data.message)
       setReload(!reload)
-    }).catch(err=>{
+    }).catch(err => {
       console.log(err)
-      if(err?.response?.data?.message){
+      if (err?.response?.data?.message) {
         toast.error(err?.response?.data?.message)
-      }else if(err?.message){
+      } else if (err?.message) {
         toast.error(err?.message)
       }
     })
@@ -74,32 +77,32 @@ function UrlsPage() {
   return (
     <div className='p-10'>
       <div className='flex gap-2 mx-auto max-w-lg'>
-        <input type="text" placeholder='Enter url here' onChange={(e) => setUrl(e.target.value)} className='block border border-gray-800 w-full px-4 py-2 rounded mb-4' />
+        <input type="text" placeholder='Enter url here ' value={url} onChange={(e) => setUrl(e.target.value)} className='block border border-gray-800 w-full px-4 py-2 rounded mb-4' />
         <button onClick={addUrl} className='bg-neutral-900 rounded-md text-center text-white px-3 hover:bg-slate-700 h-11'>Shorten</button>
         <div className='flex justify-end'>
           <button onClick={() => {
-          logout()
+            logout()
           }} className='bg-red-500 rounded-md text-center text-white px-3 hover:bg-red-700 h-11'>Logout</button>
         </div>
       </div>
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-            <tr>
-              <th scope="col" className="px-6 py-3 hover:cursor-pointer">
-                Original Url
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Shorten Url
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Delete
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-          {urls?.length>0?urls?.map(url => (
-            
+      {urls?.length > 0 ? urls?.map(url => (
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+          <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+              <tr>
+                <th scope="col" className="px-6 py-3 hover:cursor-pointer">
+                  Original Url
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Shorten Url
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Delete
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+
               <tr key={url?._id} className="bg-whit hover:bg-gray-50 text-blue-600">
                 <td scope="row" className="px-6 py-4 hover:cursor-pointer font-medium whitespace-nowrap">
                   <a target='_blank' href={url.url}>{url.url}</a>
@@ -108,17 +111,18 @@ function UrlsPage() {
                   <a target='_blank' href={url.url}>{url.shortenUrl}</a>
                 </td>
                 <td className="px-6 py-4">
-                  <button onClick={()=>deleteUrl(url?._id)} className="font-medium text-red-600 hover:cursor-pointer hover:underline">delete</button>
+                  <button onClick={() => deleteUrl(url?._id)} className="font-medium text-red-600 hover:cursor-pointer hover:underline">delete</button>
                 </td>
               </tr>
-            )):
-            <div className='flex text-red-600 font-semibold text-2xl justify-center '>
-              Add any urls
-            </div>
-            }
+
             </tbody>
-        </table>
-      </div>
+          </table>
+        </div>
+      )) :
+        ''}
+      {urls?.length > 0?'':<div className='flex text-red-600 font-semibold text-2xl justify-center '>
+        Add any urls
+      </div>}
     </div>
   )
 }

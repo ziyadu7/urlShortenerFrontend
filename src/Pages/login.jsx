@@ -37,7 +37,7 @@ function Login() {
     }
   }
   return (
-    <UserForm isLogin={true} handleSubmit={handleRegister} loading={loading} setPassword={setPassword} err={err} setUsername={setUsername}/>
+    <UserForm isLogin={true} handleSubmit={handleRegister} loading={loading} setLoading={setLoading} setPassword={setPassword} err={err} setUsername={setUsername}/>
   )
 }
 

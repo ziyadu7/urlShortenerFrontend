@@ -35,7 +35,7 @@ function Register() {
     }
   }
   return (
-    <UserForm isLogin={false} handleSubmit={handleRegister} loading={loading} setPassword={setPassword} err={err} setUsername={setUsername}/>
+    <UserForm isLogin={false} handleSubmit={handleRegister} loading={loading}  setLoading={setLoading} setPassword={setPassword} err={err} setUsername={setUsername}/>
   )
 }
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-function UserForm({isLogin,setPassword,setUsername,handleSubmit,err,loading}) {
+function UserForm({isLogin,setPassword,setUsername,handleSubmit,err,loading,setLoading}) {
     const navigate = useNavigate()
     return (
       <div className="">
@@ -13,14 +13,14 @@ function UserForm({isLogin,setPassword,setUsername,handleSubmit,err,loading}) {
            <div className='text-black'>
            <input
               type="text"
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => {setUsername(e.target.value),setLoading(false)}}
               className="block border border-grey-light w-full p-3 rounded mb-4"
               name="username"
               placeholder="username" />
   
             <input
               type="password"
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {setPassword(e.target.value),setLoading(false)}}
               className="block border border-grey-light w-full p-3 rounded mb-4"
               name="password"
               placeholder="Password" />

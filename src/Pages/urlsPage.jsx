@@ -15,7 +15,7 @@ function UrlsPage() {
 
   useEffect(() => {
 
-    axiosInstance.get('/', {
+    axiosInstance.get('/urls', {
       headers: {
         authorization: `Bearer ${encodeURIComponent(token)}`
       },
